@@ -12,7 +12,7 @@ var GuestService = {
     },
     
     getList: function(){
-        
+        GuestService.retrieveFromLocalStorage();
         return GuestService.list;
     },
     

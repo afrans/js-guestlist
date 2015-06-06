@@ -1,13 +1,12 @@
 var GuestController = {
     
-    init: function (){
+    init: function () {
         
         GuestController.setForm();
-        
         GuestController.showList();
     },
     
-    setForm: function (){
+    setForm: function () {
         
         var form = document.querySelector('form');
         form.addEventListener('submit', function (event){
@@ -47,7 +46,6 @@ var GuestController = {
         
         guestList.appendChild(dl);
         
-        
     },
     
     createImage: function(imageLocation) {
@@ -61,8 +59,10 @@ var GuestController = {
     createDT: function(guest){
         var 
         dt = document.createElement('dt'),
-        img = GuestController.createImage(guest, "http://www.gravatar.com/avatar/aab95d5689ea7c531ea98e9669f87948"),
-        dt.appendChild(img);                                  
+        hash = md5(guest.email),    
+        img = GuestController.createImage('http://www.gravatar.com/avatar/' + hash);
+        dt.appendChild(img);
+        dt.className = "photo";
         return dt;
     },
     
