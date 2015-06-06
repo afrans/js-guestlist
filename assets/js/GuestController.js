@@ -22,15 +22,29 @@ var GuestController = {
             email: form.email.value
         };
         GuestService.add(guest);
+        
+        form.name.value = "";//add to clear name after add guest
+		form.email.value = "";//add to clear email after add guest
+
         GuestController.addToHTML(guest);
     },                          
-                              
+    
     showList: function () {
         var list = GuestService.getList();
-        list.forEach(function(guest){
-        GuestController.addToHTML(guest);
-        });
+        
+        guestList = document.getElementById('guestList');//add for delete
+		guestList.innerHTML = "";//add for delete
+        
+            list.forEach(function(guest){
+            GuestController.addToHTML(guest);
+            });
     },
+
+    deleteGuest: function (email) {
+        if(GuestService.remove(email)) {
+			GuestController.showList();
+		}
+    },     
     
     addToHTML: function (guest){
       var
@@ -38,7 +52,12 @@ var GuestController = {
       dl = document.createElement('dl'),
       dt = GuestController.createDT(guest),
       ddName = GuestController.createDD(guest.name,'name'),
+          
+      deleteImg = GuestController.deleteCreateImage(guest),  
+          
       ddEmail = GuestController.createDD(guest.email, 'email');
+        
+        ddName.appendChild(deleteImg);
         
         dl.appendChild(dt);
         dl.appendChild(ddName);
@@ -74,6 +93,19 @@ var GuestController = {
         dd.className = className;
         
         return dd;
+    },
+    
+    deleteCreateImage: function (guest){
+        
+      var deleteImg = GuestController.createImage("assets/images/delete.gif");
+      deleteImg.setAttribute('data-email', guest.email);
+        deleteImg.addEventListener('click', function() {
+			//if(confirm("Are you sure to delete " + guest.email)) {
+				GuestController.deleteGuest(deleteImg.getAttribute('data-email'));
+                //event.preventDefault();
+			//}			
+		});
+       return deleteImg; 
     }
     
 };
